@@ -47,6 +47,15 @@ $(document).ready(function(){
 
     });
 
+    $("#change-limit-button").on("click", function(event){
+        event.preventDefault();
+        var num = $("#change-limit-field").val().trim();
+        var reg = /\d{1}/;
+        if(reg.test(num)){
+            limit = num;
+        }
+    });
+
     $(document).on("click", ".topic-button", function(event){
         event.preventDefault();
         
