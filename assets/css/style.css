@@ -1,1 +1,10 @@
-
+button{
+    margin:5px;
+}
+.gif-img{
+    width: 100%;
+    height: 15vw;
+}
+.card{
+    width: 18rem;
+}

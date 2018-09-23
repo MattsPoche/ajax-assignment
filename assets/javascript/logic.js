@@ -12,7 +12,7 @@ $(document).ready(function(){
         $("#topic-buttons").empty();
         for(var i = 0; i < topics.length; i++){
             var tbutton = $("<button>");
-            tbutton.addClass("topic-button");
+            tbutton.addClass("topic-button btn btn-primary");
             tbutton.text(topics[i]);
             tbutton.attr("type", "button");
             tbutton.attr("data-topic", topics[i]);
@@ -24,13 +24,15 @@ $(document).ready(function(){
         $("#gif-div").empty();
         results.forEach(element => {
             var gif = $("<img>");
-            gif.addClass("gif-img");
+            var card = $("<div>").addClass("card").append($("<div>").addClass("card-body").append($("<h5>").addClass("card-title").text("Rating: "+element.rating)))
+            gif.addClass( "gif-img", "img-fluid");
             gif.attr("src", element.images.fixed_height_still.url);
             gif.attr("data-isStill", "1");
             gif.attr("data-still", element.images.fixed_height_still.url);
             gif.attr("data-animate", element.images.fixed_height.url)
             gif.attr("alt", "gif");
-            $("#gif-div").append(gif);
+            card.append(gif);
+            $("#gif-div").append(card);
         });
     }
     $("#add-topic-button").on("click", function(event){
