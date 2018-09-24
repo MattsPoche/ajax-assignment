@@ -8,7 +8,7 @@ $(document).ready(function(){
 
     displayButtons();
 
-    //display topic buttons
+    //Create new topic buttons and add to page
     function displayButtons(){
         $("#topic-buttons").empty();
         for(var i = 0; i < topics.length; i++){
@@ -20,7 +20,7 @@ $(document).ready(function(){
             $("#topic-buttons").append(tbutton);
         }
     }
-
+    //display gifs and releated information from query result on the page
     function displayGif(results){
         $("#gif-div").empty();
         results.forEach(element => {
@@ -39,6 +39,7 @@ $(document).ready(function(){
             $("#gif-div").append(card);
         });
     }
+    //display favorites on the page
     function displayFavorites(){
         $("#gif-div").empty();
         for(var i = 0; i < favorites.length; i++){
@@ -59,50 +60,49 @@ $(document).ready(function(){
             $("#gif-div").append(card);
         }
     }
-
+    //when add-topic-button is clicked, add new topic to topics array and run displayButtons
     $("#add-topic-button").on("click", function(event){
         event.preventDefault();
 
         var t = $("#add-topic-field").val().trim();
         if(t != ""){
             topics.push(t);
-            console.log(topics);
             displayButtons();
         }
 
     });
-
+    //on click, change the number of resultes returned by  query
     $("#change-limit-button").on("click", function(event){
         event.preventDefault();
         var num = $("#change-limit-field").val().trim();
+        //regular expression
         var reg = /\d{1}/;
+        //num must be a numeric value
         if(reg.test(num)){
             limit = num;
         }
     });
-
+    //on click run displayFavorites
     $("#show-favorite-button").on("click", function(event){
         event.preventDefault();
         displayFavorites();
     });
-
+    //on click, querry Giphy for topic 
     $(document).on("click", ".topic-button", function(event){
         event.preventDefault();
         
         var queryURL = queryStr + $(this).attr("data-topic") + "&api_key=" + API_KEY + "&limit=" + limit;
-        console.log(queryURL);
         //Ajax GET Request to queryURL
         $.ajax({
             url: queryURL,
             method: "GET"
         }).then(function(res){
             var results = res.data;
-            console.log (results);
             displayGif(results);
         });
 
     });
-
+    //when gif is clicked, toggle src attribute to an animated gif or a still gif
     $(document).on("click", ".gif-img", function(event){
         event.preventDefault();
 
@@ -114,25 +114,27 @@ $(document).ready(function(){
             $(this).attr("data-isStill", "1");
         }
     });
-
+    //on click add to favorites
     $(document).on("click", ".addTo-favorite-button", function(event){
         event.preventDefault();
 
         var gif = $(this).parent().find("img");
+
+        //add an anonymous object that represents the favorited gif to the favorites array
         favorites.push({
             "animate": $(gif).attr("data-animate"),
             "still": $(gif).attr("data-still"),
             "rating": $(gif).attr("data-rating")
         });
     });
+    //on click removes gif from the favorites array and calls displayFavorites
+
     $(document).on("click", ".remove-favorite-button", function(event){
         event.preventDefault();
 
         var gif = $(this).parent().find("img");
         favorites.splice(gif.attr("data-index"), 1);
-        displayFavorites();
-        console.log(favorites);
-        
+        displayFavorites();        
     });
 
 
